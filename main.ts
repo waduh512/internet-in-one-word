@@ -13,6 +13,12 @@ import { join } from "node:path";
 
 const WORD = "audition";
 
+// The gate counts bytes (1-30): fail loudly here rather than submitting
+// a word the scorer would refuse.
+if (Buffer.byteLength(WORD, "utf8") < 1 || Buffer.byteLength(WORD, "utf8") > 30) {
+  throw new Error("WORD must be 1-30 bytes");
+}
+
 const outDir = "/output";
 mkdirSync(outDir, { recursive: true });
 const out = join(outDir, "entry.txt");
